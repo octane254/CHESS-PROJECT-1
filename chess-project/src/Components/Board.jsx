@@ -1,3 +1,5 @@
+import "../Css/board.css"
+
 function ChessBoard (){
     
     // Arrays for the files and ranks in chess
@@ -54,7 +56,7 @@ function ChessBoard (){
 
         return (
 
-            <div>
+            <div className="chessBoard">
                 {board}
             </div>
         )
