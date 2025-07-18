@@ -1,14 +1,56 @@
+import { useState,useEffect } from "react"
+import ChessPieces from "./Chess-PIeces"
 import "../Css/board.css"
 
 function ChessBoard (){
     
     // Arrays for the files and ranks in chess
     
-    const rows = [1,2,3,4,5,6,7,8]
+    const rows = [8,7,6,5,4,3,2,1]
 
     const columns =["a","b","c","d","e","f","g","h"]
 
-    // tiles are going to be added in the empty Array 
+    const [pieces, setPieces] =useState({}) // initial state is an empty object 
+
+    // for positioning the the pieces in the board 
+
+    useEffect(()=>{
+
+        // an empty object to store the pieces
+
+        const initialPieces = {}
+        const backRow=["rook","knight","bishop","queen","king","bishop", "knight","rook"]  // An array to organise the 8th and 1st ranks
+
+
+        // create a loop to place blue pieces in their required tiles  
+
+        columns.forEach((col,i) => {
+
+            initialPieces[`${col}8`] = `blue-${backRow[i]}`
+            initialPieces[`${col}7`] = `blue-pawn`
+
+
+        })
+        
+            // create a loop to place white pieces in their required tiles  
+
+        columns.forEach((col,i) => {
+
+            initialPieces[`${col}1`] = `white-${backRow[i]}`
+            initialPieces[`${col}2`] = `white-pawn`
+
+
+        })     
+        
+        setPieces(initialPieces)
+
+    },[])
+
+    // function to render the pieces on the board
+
+    const renderpieces = ()=>{
+
+    
 
     let board = []
 
@@ -19,19 +61,19 @@ function ChessBoard (){
 
             
             const tilecolors = (i+j)%2
-            const position = `${columns[j]} ${rows[i]}`
+            const position = `${columns[j]}${rows[i]}`
             
-            // store tileclass variable as undifined to allow the tiles to be looped in different colors in the board 
+            // store tileclass variable as undifined to allow the tiles for it to change color with specified validation 
 
             let tileclass;
 
             if(tilecolors === 0){
 
-                tileclass = "white-color"  // To Add the class in css to display a white tile 
+                tileclass = "white-color" 
             }
             else{
 
-                tileclass = "blue-color" // To Add class in css to display a blue tile 
+                tileclass = "blue-color"  
             }
 
             // Add Tiles to the board 
@@ -44,8 +86,9 @@ function ChessBoard (){
                 className={`tile ${tileclass}`}
 
                 >
+                    <ChessPieces piece={pieces[position]} />                    
 
-                [{columns[j]}{rows[i]}]
+                <div className="coordinates">[{position}]</div>
 
                 </div>
 
@@ -54,10 +97,12 @@ function ChessBoard (){
         }
     }
 
+        return board
+}
         return (
 
             <div className="chessBoard">
-                {board}
+                {renderpieces()}
             </div>
         )
 
