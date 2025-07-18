@@ -38,7 +38,8 @@ function ChessPieces ({piece}){
         piece && <img
 
         src={pieceImages[piece]}
-        alt={piece} 
+        alt={piece}
+        className='imagePiece' 
         
         />
     )

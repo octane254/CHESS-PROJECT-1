@@ -63,17 +63,17 @@ function ChessBoard (){
             const tilecolors = (i+j)%2
             const position = `${columns[j]}${rows[i]}`
             
-            // store tileclass variable as undifined to allow the tiles to be looped in different colors in the board 
+            // store tileclass variable as undifined to allow the tiles for it to change color with specified validation 
 
             let tileclass;
 
             if(tilecolors === 0){
 
-                tileclass = "white-color"  // To Add the class in css to display a white tile 
+                tileclass = "white-color" 
             }
             else{
 
-                tileclass = "blue-color" // To Add class in css to display a blue tile 
+                tileclass = "blue-color"  
             }
 
             // Add Tiles to the board 
@@ -88,7 +88,7 @@ function ChessBoard (){
                 >
                     <ChessPieces piece={pieces[position]} />                    
 
-                [{position}]
+                <div className="coordinates">[{position}]</div>
 
                 </div>
 
