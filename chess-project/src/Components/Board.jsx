@@ -4,7 +4,7 @@ function ChessBoard (){
     
     // Arrays for the files and ranks in chess
     
-    const rows = [1,2,3,4,5,6,7,8]
+    const rows = [8,7,6,5,4,3,2,1]
 
     const columns =["a","b","c","d","e","f","g","h"]
 
@@ -19,7 +19,7 @@ function ChessBoard (){
 
             
             const tilecolors = (i+j)%2
-            const position = `${columns[j]} ${rows[i]}`
+            const position = `${columns[j]}${rows[i]}`
             
             // store tileclass variable as undifined to allow the tiles to be looped in different colors in the board 
 
@@ -45,7 +45,7 @@ function ChessBoard (){
 
                 >
 
-                [{columns[j]}{rows[i]}]
+                [{position}]
 
                 </div>
 
