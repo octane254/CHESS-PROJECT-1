@@ -9,13 +9,13 @@ const ChessGame = () => {
 
   // Returns the current status of the chess game as a string
   const getGameStatus = () => {
-    if (game.isGameOver()) {
-      if (game.isCheckmate()) return "Checkmate!";
+    if (game.game_over()) {
+      if (game.in_checkmate()) return "Checkmate!";
       if (game.isDraw()) return "Draw!";
-      if (game.isStalemate()) return "Stalemate!";
+      if (game.in_stalemate()) return "Stalemate!";
       return "Game Over!";
     }
-    if (game.inCheck()) return "Check!";
+    if (game.in_check()) return "Check!";
     return `${game.turn() === 'w' ? 'White' : 'Black'} to move`;
   };
 

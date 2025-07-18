@@ -8,6 +8,6 @@ import ChessGame from './Components/ChessGame'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ChessBoard />
-    
+    <ChessGame />
   </StrictMode>,
 )
