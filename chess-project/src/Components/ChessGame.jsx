@@ -4,6 +4,7 @@ import ChessBoard from './Board';
 
 const ChessGame = () => {
   const [game, setGame] = useState(new Chess()); // Initialize a new Chess game
+  const [moveLog, setMoveLog] = useState([]); // State to keep track of the move log
 }
 
 export default ChessGame;
