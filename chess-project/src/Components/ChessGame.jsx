@@ -35,5 +35,9 @@ const getGameStatus = () => {
   return `${game.turn() === 'w' ? 'White' : 'Black'} to move`;
 };
 
+const resetGame = () => {
+  setGame(new Chess()); // Reset the game to a new instance
+  setMoveLog([]); // Clear the move log
+};
 
 export default ChessGame;
