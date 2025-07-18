@@ -7,6 +7,7 @@ const ChessGame = () => {
   const [moveLog, setMoveLog] = useState([]); // State to keep track of the move log
 }
 
+
 // Returns the current status of the chess game as a string
 const getGameStatus = () => {
   // If the game is over, determine the reason
@@ -33,5 +34,6 @@ const getGameStatus = () => {
   // Otherwise, indicate whose turn it is
   return `${game.turn() === 'w' ? 'White' : 'Black'} to move`;
 };
+
 
 export default ChessGame;
