@@ -40,4 +40,54 @@ const resetGame = () => {
   setMoveLog([]); // Clear the move log
 };
 
+
+const [selectedSquare, setSelectedSquare] = useState(null);
+
+// Handles when a square is clicked
+const handleSquareClick = useCallback(
+  (square) => {
+    if (selectedSquare) {
+      // Try to make the move
+      const move = game.move({ from: selectedSquare, to: square, promotion: 'q' });
+      if (move) {
+        setGame(new Chess(game.fen())); // Update game state
+        setMoveLog([...moveLog, move]);
+        setSelectedSquare(null);
+      } else {
+        // Invalid move, reset selection or select new square
+        setSelectedSquare(game.get(square) ? square : null);
+      }
+    } else {
+      // Select the square if it has a piece of the current turn
+      const piece = game.get(square);
+      if (piece && piece.color === game.turn()) {
+        setSelectedSquare(square);
+      }
+    }
+  },
+  [game, selectedSquare, moveLog]
+);
+
+return (
+  <div>
+    <ChessBoard
+      position={game.fen()}
+      onSquareClick={handleSquareClick}
+      selectedSquare={selectedSquare}
+      lastMove={moveLog.length > 0 ? moveLog[moveLog.length - 1] : null}
+    />
+    <div>{getGameStatus()}</div>
+    <button onClick={resetGame}>Reset Game</button>
+    <div>
+      <h4>Move Log</h4>
+      <ol>
+        {moveLog.map((move, idx) => (
+          <li key={idx}>{move.san}</li>
+        ))}
+      </ol>
+    </div>
+  </div>
+);
+
+
 export default ChessGame;
