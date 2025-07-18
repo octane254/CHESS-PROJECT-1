@@ -1,4 +1,5 @@
 import { useState,useEffect } from "react"
+import ChessPieces from "./Chess-PIeces"
 import "../Css/board.css"
 
 function ChessBoard (){
@@ -45,7 +46,11 @@ function ChessBoard (){
 
     },[])
 
-    // tiles are going to be added in the empty Array 
+    // function to render the pieces on the board
+
+    const renderpieces = ()=>{
+
+    
 
     let board = []
 
@@ -81,6 +86,7 @@ function ChessBoard (){
                 className={`tile ${tileclass}`}
 
                 >
+                    <ChessPieces piece={pieces[position]} />                    
 
                 [{position}]
 
@@ -91,10 +97,12 @@ function ChessBoard (){
         }
     }
 
+        return board
+}
         return (
 
             <div className="chessBoard">
-                {board}
+                {renderpieces()}
             </div>
         )
 
