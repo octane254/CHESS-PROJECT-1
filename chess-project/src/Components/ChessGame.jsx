@@ -1,50 +1,65 @@
 import { useCallback, useState } from 'react';
-import { Chess } from 'chess.js'; // Import the chess.js library
+import { Chess } from 'chess.js';
 import ChessBoard from './Board';
 
 const ChessGame = () => {
-  const [game, setGame] = useState(new Chess()); // Initialize a new Chess game
-  const [moveLog, setMoveLog] = useState([]); // State to keep track of the move log
-  const [selectedSquare, setSelectedSquare] = useState(null); // Track selected square
+  const [game, setGame] = useState(new Chess());
+  const [moveLog, setMoveLog] = useState([]);
+  const [selectedSquare, setSelectedSquare] = useState(null);
+  const [possibleMoves, setPossibleMoves] = useState([]);
 
-  // Returns the current status of the chess game as a string
   const getGameStatus = () => {
-    if (game.game_over()) {
-      if (game.in_checkmate()) return "Checkmate!";
+    if (game.isGameOver()) {
+      if (game.isCheckmate()) return "Checkmate!";
       if (game.isDraw()) return "Draw!";
-      if (game.in_stalemate()) return "Stalemate!";
+      if (game.isStalemate()) return "Stalemate!";
       return "Game Over!";
     }
-    if (game.in_check()) return "Check!";
+    if (game.inCheck()) return "Check!";
     return `${game.turn() === 'w' ? 'White' : 'Black'} to move`;
   };
 
-  // Reset the game to a new instance
   const resetGame = () => {
     setGame(new Chess());
     setMoveLog([]);
     setSelectedSquare(null);
+    setPossibleMoves([]);
   };
 
-  // Handles when a square is clicked
   const handleSquareClick = useCallback(
     (square) => {
+      if (selectedSquare === square) {
+        // Deselect if clicking the same square
+        setSelectedSquare(null);
+        setPossibleMoves([]);
+        return;
+      }
+
+      const piece = game.get(square);
+
       if (selectedSquare) {
         // Try to make the move
         const move = game.move({ from: selectedSquare, to: square, promotion: 'q' });
         if (move) {
-          setGame(new Chess(game.fen())); // Update game state
+          setGame(new Chess(game.fen()));
           setMoveLog([...moveLog, move]);
           setSelectedSquare(null);
+          setPossibleMoves([]);
         } else {
-          // Invalid move, reset selection or select new square
-          setSelectedSquare(game.get(square) ? square : null);
+          // Invalid move, select new square if it has a piece of current turn
+          if (piece && piece.color === game.turn()) {
+            setSelectedSquare(square);
+            setPossibleMoves(game.moves({ square, verbose: true }).map(m => m.to));
+          } else {
+            setSelectedSquare(null);
+            setPossibleMoves([]);
+          }
         }
       } else {
         // Select the square if it has a piece of the current turn
-        const piece = game.get(square);
         if (piece && piece.color === game.turn()) {
           setSelectedSquare(square);
+          setPossibleMoves(game.moves({ square, verbose: true }).map(m => m.to));
         }
       }
     },
@@ -57,10 +72,27 @@ const ChessGame = () => {
         position={game.fen()}
         onSquareClick={handleSquareClick}
         selectedSquare={selectedSquare}
+        possibleMoves={possibleMoves}
         lastMove={moveLog.length > 0 ? moveLog[moveLog.length - 1] : null}
       />
       <div>{getGameStatus()}</div>
-      <button onClick={resetGame}>Reset Game</button>
+      <button
+        onClick={resetGame}
+        style={{
+          backgroundColor: '#f44336',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          padding: '8px 16px',
+          margin: '12px 0',
+          cursor: 'pointer',
+          fontWeight: 'bold',
+          fontSize: '1rem',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}
+      >
+        Reset Game
+      </button>
       <div>
         <h4>Move Log</h4>
         <ol>
